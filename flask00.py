@@ -10,8 +10,6 @@ from database import db
 from models import Post as Post
 from models import User as User
 
-# unwritten entities: comment, post, user
-
 
 app = Flask(__name__)     # create an app
 
@@ -22,13 +20,6 @@ db.init_app(app)
 # Setup models
 with app.app_context():
    db.create_all()   # run under the app context
-
-
-
-# posts = { 1: {'subject': 'First post', 'text': 'This is my first post', 'date': '10-1-2020'},
-#          2: {'subject': 'Second post', 'text': 'This is my second post', 'date': '10-2-2020'},
-#          3: {'subject': 'Third post', 'text': 'This is my third post', 'date': '10-3-2020'}
-#        }
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -46,21 +37,18 @@ def get_posts():
 
    return render_template('feed.html', posts=my_posts, user=a_user)
 
-@app.route('/singlePost/<post_id>')
+@app.route('/feed/<post_id>')
+#changed singlePost to feed
 def get_post(post_id):
    a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-   my_posts = db.session.query(Post).filter_by(id=post_id).one()
+   my_post = db.session.query(Post).filter_by(id=post_id).one()
 
-   return render_template('singlePost.html', post=posts[int(post_id)])
+   return render_template('singlePost.html', post=my_post, user=a_user)
 
 
 @app.route('/feed/new',methods=['GET','POST'])
 def new_post():
-   # create mock user
-   a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-
    # check method used for request
-   print('request method is',request.method)
    if request.method == 'POST':
        # get title data
        subject = request.form["subject"]

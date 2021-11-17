@@ -4,22 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="UNCC Notes App">
-        <title>UNCC Notes App - View your Notes</title>
+        <nav>
+          <a href="{{ url_for('index') }}"> Home</a> ||
+          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+          <a href="{{ url_for('new_post') }}"> Add Post</a>
+        </nav>
+        <title>Mobilize Posting App - Feed</title>
         <!-- styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
-
-      <nav>
-            <a href="{{ url_for('index')}}">Home</a> ||
-            <a href="{{ url_for('get_posts')}}">My Posts</a> ||
-            <a href="{{ url_for('new_post')}}">Add Post</a>
-        </nav>
-
-
-
-        <h1>Listing notes</h1>
-
+      <h1>Welcome {{user.name}} to the Mobilize Posting App!</h1>
+      <h1>Listing Posts</h1>
 
         <table>
             <tr>
@@ -28,12 +24,16 @@
                 <th>Date</th>
                 <th>Rating</th>
             </tr>
-            {% for key, value in posts.items() %}
+            {% for post in posts %}
             <tr>
-                <td>{{ value.name }}</td>
-                <td>{{ value.subject }}</td>
-                <td>{{ value.date }}</td>
-                 <td>{{value.rating }}</td>
+                <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.subject }}</a></td>
+                <td>{{ post.date }}</td>
+                <td><a href="{{ url_for('update_post', post_id=post.id) }}"> Edit</a></td>
+                <td>
+                  <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                    <input type="submit" value="Delete">
+                  </form>
+                </td>
             </tr>
             {% endfor %}
         </table>

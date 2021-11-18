@@ -9,7 +9,7 @@ from flask import redirect, url_for
 from database import db
 from models import Post as Post
 from models import User as User
-from forms import RegisterForm
+from forms import RegisterForm, LoginForm
 import bcrypt
 from flask import session
 
@@ -33,11 +33,6 @@ with app.app_context():
 def index():
    a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
    return render_template('index.html', user = a_user)
-
-@app.route('/signIn')
-def signIn():
-   a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-   return render_template('signIn.html' )
 
 @app.route('/feed')
 def get_posts():
@@ -146,6 +141,30 @@ def register():
 
     # something went wrong - display register view
     return render_template('register.html', form=form)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    login_form = LoginForm()
+    # validate_on_submit only validates using POST
+    if login_form.validate_on_submit():
+        # we know user exists. We can use one()
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        # user exists check password entered matches stored password
+        if bcrypt.checkpw(request.form['password'].encode('utf-8'), the_user.password):
+            # password match add user info to session
+            session['user'] = the_user.first_name
+            session['user_id'] = the_user.id
+            # render view
+            return redirect(url_for('get_notes'))
+
+        # password check failed
+        # set error message to alert user
+        login_form.password.errors = ["Incorrect username or password."]
+        return render_template("login.html", form=login_form)
+    else:
+        # form did not validate or GET request
+        return render_template("login.html", form=login_form)
 
 
 

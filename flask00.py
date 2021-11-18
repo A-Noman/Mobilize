@@ -9,9 +9,10 @@ from flask import redirect, url_for
 from database import db
 from models import Post as Post
 from models import User as User
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm
 import bcrypt
 from flask import session
+from forms import LoginForm
 
 
 app = Flask(__name__)     # create an app
@@ -31,90 +32,102 @@ with app.app_context():
 @app.route('/')
 @app.route('/index')
 def index():
-   a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-   return render_template('index.html', user = a_user)
+    if session.get('user'):
+        return render_template('index.html', user=session['user'])
+    return render_template("index.html")
 
 @app.route('/feed')
 def get_posts():
     if session.get('user'):
-        my_posts = db.session.query(Post).all()
+        my_posts = db.session.query(Post).filter_by(user_id=session['user_id']).all()
 
         return render_template('feed.html', posts=my_posts, user=session['user'])
     else:
-        return redirect(url_for('signIn'))
-
+        return redirect(url_for('login'))
 
 
 @app.route('/feed/<post_id>')
 #changed singlePost to feed
 def get_post(post_id):
-   a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-   my_post = db.session.query(Post).filter_by(id=post_id).one()
+    if session.get('user'):
+        my_post = db.session.query(Post).filter_by(id=post_id, user_id=session['user_id']).one()
 
-   return render_template('singlePost.html', post=my_post, user=a_user)
+        return render_template('singlePost.html', post=my_post, user=session['user'])
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/feed/new',methods=['GET','POST'])
 def new_post():
-   # check method used for request
-   if request.method == 'POST':
-       # get title data
-       subject = request.form["subject"]
-       # get note data
-       text = request.form['noteText']
-       # create date stamp
-       from datetime import date
-       today = date.today()
-       # format date mm/dd/yyyy
-       today = today.strftime("%m-%d-%Y")
-       new_record = Post(subject, text, today)
-       db.session.add(new_record)
-       db.session.commit()
+    if session.get('user'):
 
-       return redirect(url_for('get_posts'))
-   else:
-       # GET request -show new note form
-       a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
-       return render_template('newPost.html', user=a_user)
+       # check method used for request
+       if request.method == 'POST':
+           # get title data
+           subject = request.form["subject"]
+           # get note data
+           text = request.form['noteText']
+           # create date stamp
+           from datetime import date
+           today = date.today()
+           # format date mm/dd/yyyy
+           today = today.strftime("%m-%d-%Y")
+           new_record = Post(subject, text, today, session['user_id'])
+           db.session.add(new_record)
+           db.session.commit()
+
+           return redirect(url_for('get_posts'))
+       else:
+           # GET request -show new note form
+           return render_template('newPost.html', user=session['user'])
+
+    else:
+        return redirect(url_for('login'))
 
 
 # TO CHANGE
 @app.route('/feed/edit/<post_id>', methods=['GET', 'POST'])
 def update_post(post_id):
-   #check method used for request
-   if request.method == 'POST':
-       # get title data
-       subject = request.form['subject']
-       # get note data
-       text = request.form['noteText']
-       post = db.session.query(Post).filter_by(id=post_id).one()
-       # update note data
-       post.subject = subject
-       post.text = text
-       # update note in DB
-       db.session.add(post)
-       db.session.commit()
+    if session.get('user'):
 
-       return  redirect(url_for('get_posts'))
-   else:
-       #GET request - show new note form to edit note
-       # retrieve user from database
-       a_user = db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
+       #check method used for request
+       if request.method == 'POST':
+           # get title data
+           subject = request.form['subject']
+           # get note data
+           text = request.form['noteText']
+           post = db.session.query(Post).filter_by(id=post_id).one()
+           # update note data
+           post.subject = subject
+           post.text = text
+           # update note in DB
+           db.session.add(post)
+           db.session.commit()
 
-       # retrieve notes from database
-       my_post = db.session.query(Post).filter_by(id=post_id).one()
+           return  redirect(url_for('get_posts'))
+       else:
+           #GET request - show new note form to edit note
 
-       return render_template('newPost.html', post=my_post, user=a_user)
+           # retrieve notes from database
+           my_post = db.session.query(Post).filter_by(id=post_id).one()
+
+           return render_template('newPost.html', post=my_post, user=session['user'])
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/feed/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
-   # retrieve note from database
-   my_post = db.session.query(Post).filter_by(id=post_id).one()
-   db.session.delete(my_post)
-   db.session.commit()
+    if session.get('user'):
+       # retrieve note from database
+       my_post = db.session.query(Post).filter_by(id=post_id).one()
+       db.session.delete(my_post)
+       db.session.commit()
 
-   return redirect(url_for('get_posts'))
+       return redirect(url_for('get_posts'))
+    else:
+        return redirect(url_for('login'))
+
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -156,7 +169,7 @@ def login():
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
             # render view
-            return redirect(url_for('get_notes'))
+            return redirect(url_for('get_posts'))
 
         # password check failed
         # set error message to alert user

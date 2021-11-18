@@ -1,7 +1,7 @@
 from database import db
 import datetime
 
-class Post (db.Model):
+class Post(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
     subject = db.Column("subject", db.String(200))
     text = db.Column("text", db.String(100))
@@ -33,7 +33,7 @@ class User(db.Model):
         self.registered_on = datetime.date.today()
 
 
-class Comment (db.Model):
+class Comment(db.Model):
 
     id = db.Column("id", db.Integer, primary_key=True)
     text = db.Column("text", db.String(100))

@@ -10,14 +10,14 @@
         <div class="navdiv">
             <nav>
                 <a href="{{ url_for('index') }}"> Home</a> ||
-                <a href="{{ url_for('get_notes') }}"> My Notes</a> ||
-                <a href="{{ url_for('new_note') }}">Add Note</a>
+                <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+                <a href="{{ url_for('new_post') }}">Add Post</a>
             </nav>
         </div>
 
-        <h1>Welcome {% if user %}{{user}}{% endif %}to the 49er Notes App!</h1>
+        <h1>Welcome {% if user %}{{user}}{% endif %}to Mobilize!</h1>
 
-        <h2>Use this site to maintain and organize your notes.</h2>
+        <h2>Use this site to post stuff.</h2>
         <div class="formwrapper">
             <h2 class="title">Login</h2>
             <form method="POST" action="/login">

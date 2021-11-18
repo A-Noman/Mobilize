@@ -10,20 +10,19 @@
     </head>
     <body>
         <nav>
-            <a href="{{ url_for('index')}}">Home</a> ||
-            <a href="{{ url_for('get_posts')}}">My Posts</a> ||
-            <a href="{{ url_for('new_post')}}">Add Post</a>
+
         </nav>
         
 
 
-        <h1>Welcome {{ user.name }} to the Mobilize Posting App!</h1>
+        <h1>Welcome to our website! </h1>
 
-        <h2>Use this site to ask questions by creating posts and adding comments to other discussion posts.</h2>
+        <h2>Use this site in order to ask questions by creating posts and adding comments to other discussion posts.</h2>
 
-        <h3>Sign In</h3>
+        <h2>To get started, sign in using the sign in button below, or create an account using the register button! </h2>
+        <h3><a href="{{ url_for('signIn')}}">Sign In</a></h3>
 
-        <h3>Register</h3>
+        <h3><a href="{{ url_for('register')}}">Register</a></h3>
 
     </body>
 </html>

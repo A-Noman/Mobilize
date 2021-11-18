@@ -30,12 +30,25 @@ def index():
    a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
    return render_template('index.html', user = a_user)
 
+@app.route('/signIn')
+def signIn():
+   a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
+   return render_template('signIn.html' )
+
+
+@app.route('/register')
+def register():
+    a_user = db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
+
+    return render_template('register.html' , user = a_user)
 @app.route('/feed')
 def get_posts():
    a_user =  db.session.query(User).filter_by(email='pyadav5@uncc.edu').one()
    my_posts = db.session.query(Post).all()
 
    return render_template('feed.html', posts=my_posts, user=a_user)
+
+
 
 @app.route('/feed/<post_id>')
 #changed singlePost to feed
@@ -98,6 +111,10 @@ def update_post(post_id):
 
        return render_template('newPost.html', post=my_post, user=a_user)
 
+
+
+
+
 @app.route('/feed/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
    # retrieve note from database
@@ -106,9 +123,6 @@ def delete_post(post_id):
    db.session.commit()
 
    return redirect(url_for('get_posts'))
-
-
-
 
 
 

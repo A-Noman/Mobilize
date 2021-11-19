@@ -1,20 +1,22 @@
 from database import db
 import datetime
 
+
 class Post(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
-    subject = db.Column("subject", db.String(200))
+    title = db.Column("title", db.String(200))
     text = db.Column("text", db.String(100))
     date = db.Column("date", db.String(50))
     rating = db.Column("rating", db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-    def __init__(self, subject, text, date, rating, user_id):
-        self.subject = subject
+    def __init__(self, title, text, date, rating, user_id):
+        self.title = title
         self.text = text
         self.date = date
         self.rating = rating
         self.user_id = user_id
+
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
@@ -34,7 +36,6 @@ class User(db.Model):
 
 
 class Comment(db.Model):
-
     id = db.Column("id", db.Integer, primary_key=True)
     text = db.Column("text", db.String(100))
 

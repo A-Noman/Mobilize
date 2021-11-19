@@ -64,15 +64,16 @@ def new_post():
        # check method used for request
        if request.method == 'POST':
            # get title data
-           subject = request.form["subject"]
+           title = request.form["title"]
            # get note data
            text = request.form['noteText']
+           first_name = session["user"]
            # create date stamp
            from datetime import date
            today = date.today()
            # format date mm/dd/yyyy
            today = today.strftime("%m-%d-%Y")
-           new_record = Post(subject, text, today, session['user_id'])
+           new_record = Post(title, text, today, session['user_id'],first_name)
            db.session.add(new_record)
            db.session.commit()
 

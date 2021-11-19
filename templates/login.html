@@ -15,9 +15,9 @@
             </nav>
         </div>
 
-        <h1>Welcome {% if user %}{{user}}{% endif %}to Mobilize!</h1>
+<!--    <div class="Mobilize"> Welcome {% if user %}{{user}}{% endif %} to Mobilize! </div>-->
+<br>
 
-        <h2>Use this site to post stuff.</h2>
         <div class="formwrapper">
             <h2 class="title">Login</h2>
             <form method="POST" action="/login">
@@ -30,6 +30,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.password.label }} {{ form.password }}
                     {% if form.password.errors %}
                     <ul class="errors">
@@ -39,7 +40,7 @@
                     </ul>
                     {% endif %}
                 </div>
-                {{ form.submit }}
+                <div class ="submitButton"> {{ form.submit }} </div>
             </form>
         </div>
     </body>

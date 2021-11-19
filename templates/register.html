@@ -16,11 +16,13 @@
             </nav>
 
         </div>
-        <h1>Welcome {% if user %}{{user}}{% endif %}to Mobilize!</h1>
+          <div class="Mobilize"> Welcome to Mobilize! </div>
+<!--        <div class="Mobilize"> Welcome {% if user %}{{user}}{% endif %} to Mobilize! </div>-->
+<br>
 
-        <h2>Use this site to post stuff.</h2>
         <div class="formwrapper">
             <h2 class="title">Register</h2>
+
             <form method="POST" action="/register">
                 <div class="form-field">{{ form.firstname.label }} {{ form.firstname }}
                     {% if form.firstname.errors %}
@@ -31,6 +33,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.lastname.label }} {{ form.lastname }}
                     {% if form.lastname.errors %}
                     <ul class="errors">
@@ -40,6 +43,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.email.label }} {{ form.email }}
                     {% if form.email.errors %}
                     <ul class="errors">
@@ -49,6 +53,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.password.label }} {{ form.password }}
                     {% if form.password.errors %}
                     <ul class="errors">
@@ -58,6 +63,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.confirmPassword.label }} {{ form.confirmPassword }}
                     {% if form.confirmPassword.errors %}
                     <ul class="errors">
@@ -67,7 +73,8 @@
                     </ul>
                     {% endif %}
                 </div>
-                {{ form.submit }}
+                <br>
+               <div class ="submitButton"> {{ form.submit }} </div>
             </form>
 
         </div>

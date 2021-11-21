@@ -13,6 +13,9 @@ from forms import RegisterForm
 import bcrypt
 from flask import session
 from forms import LoginForm
+from forms import CommentForm
+from models import Comment as Comment
+
 
 
 app = Flask(__name__)     # create an app
@@ -52,7 +55,9 @@ def get_post(post_id):
     if session.get('user'):
         my_post = db.session.query(Post).filter_by(id=post_id, user_id=session['user_id']).one()
 
-        return render_template('singlePost.html', post=my_post, user=session['user'])
+        form = CommentForm()
+
+        return render_template('singlePost.html', post=my_post, user=session['user'], form=form)
     else:
         return redirect(url_for('login'))
 
@@ -193,6 +198,24 @@ def logout():
         session.clear()
 
     return redirect(url_for('index'))
+
+
+@app.route('/feed/<post_id>/comment', methods=['POST'])
+def new_comment(post_id):
+    if session.get('user'):
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(post_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_post', post_id=post_id))
+
+    else:
+        return redirect(url_for('login'))
 
 
 

@@ -7,14 +7,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
 </head>
     <body>
-        <div class="navdiv">
+      {% if user %}
+        <nav>
+          <a href="{{url_for('logout')}}">Logout</a>
+        </nav>
+      {% else %}
+        <nav>
+          <a href="{{url_for('login')}}">Login</a>
+          <a href="{{url_for('register')}}">Register</a>
+        </nav>
+      {% endif %}
 
+        <div class="navdiv">
             <nav>
                 <a href="{{ url_for('index') }}"> Home</a> ||
                 <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
                 <a href="{{ url_for('new_post') }}">Add Post</a>
             </nav>
-
         </div>
         <h1>Welcome {% if user %}{{user}}{% endif %}to Mobilize!</h1>
 

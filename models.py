@@ -31,12 +31,3 @@ class User(db.Model):
         self.email = email
         self.password = password
         self.registered_on = datetime.date.today()
-
-
-class Comment(db.Model):
-
-    id = db.Column("id", db.Integer, primary_key=True)
-    text = db.Column("text", db.String(100))
-
-    def __init__(self, text):
-        self.text = text

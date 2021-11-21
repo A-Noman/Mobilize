@@ -73,7 +73,12 @@ def new_post():
            today = date.today()
            # format date mm/dd/yyyy
            today = today.strftime("%m-%d-%Y")
-           new_record = Post(subject, text, today, session['user_id'], first_name)
+
+           rating = 5
+
+           # new_record = Post(subject, text, today, session['user_id'], first_name)
+           new_record = Post(subject, text, today, rating, session['user_id'])
+
            db.session.add(new_record)
            db.session.commit()
 

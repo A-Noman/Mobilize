@@ -25,7 +25,7 @@ class RegisterForm(FlaskForm):
     ])
 
     confirmPassword = PasswordField('Confirm Password', validators=[
-        Regexp('^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$',message='The password must be atleast 6 characters includes atleast 1 number and 1 special character')
+        Regexp('^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$',message='The password must be at least 6 characters includes at least 1 number and 1 special character')
     ])
     submit = SubmitField('Submit')
 

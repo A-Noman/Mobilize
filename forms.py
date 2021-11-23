@@ -6,6 +6,7 @@ from models import User
 from database import db
 
 
+
 class RegisterForm(FlaskForm):
     class Meta:
         csrf = False
@@ -24,14 +25,13 @@ class RegisterForm(FlaskForm):
     ])
 
     confirmPassword = PasswordField('Confirm Password', validators=[
-        Length(min=6, max=10)
+        Regexp('^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$',message='The password must be atleast 6 characters includes atleast 1 number and 1 special character')
     ])
     submit = SubmitField('Submit')
 
     def validate_email(self, field):
         if db.session.query(User).filter_by(email=field.data).count() != 0:
             raise ValidationError('Username already in use.')
-
 
 class LoginForm(FlaskForm):
     class Meta:

@@ -23,16 +23,30 @@
 
         <table>
             <tr>
-                <th>Name</th>
+                <th>User ID</th>
                 <th>Subject</th>
                 <th>Date</th>
                 <th>Rating</th>
             </tr>
             {% for post in posts %}
             <tr>
+            
+                <!-- get the Name -->
+                <td>{{post.user_id}}</td>
+
+                <!-- get the subject -->
                 <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.subject }}</a></td>
+
+                <!-- get the date -->
                 <td>{{ post.date }}</td>
+
+                <!-- get the rating -->
+                <td>{{post.rating}}</td>
+
+                <!-- get the Edit button -->
                 <td><a href="{{ url_for('update_post', post_id=post.id) }}"> Edit</a></td>
+
+                <!-- get the Delete button -->
                 <td>
                   <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
                     <input type="submit" value="Delete">

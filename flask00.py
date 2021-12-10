@@ -44,6 +44,7 @@ def get_posts():
     if session.get('user'):
         my_posts = db.session.query(Post).filter_by(user_id=session['user_id']).all()
 
+
         return render_template('feed.html', posts=my_posts, user=session['user'])
     else:
         return redirect(url_for('login'))
@@ -79,7 +80,7 @@ def new_post():
            # format date mm/dd/yyyy
            today = today.strftime("%m-%d-%Y")
 
-           rating = 5
+           rating = 0
 
            # new_record = Post(subject, text, today, session['user_id'], first_name)
            new_record = Post(subject, text, today, rating, session['user_id'])
@@ -153,7 +154,16 @@ def register():
         first_name = request.form['firstname']
         last_name = request.form['lastname']
         # create user model
-        new_user = User(first_name, last_name, request.form['email'], h_password)
+
+        quote = "this is a quote"
+        color = "COLOR"
+        hobbies = "a hobby"
+        courses = "software tings"
+
+        # new constructor
+
+        new_user = User(first_name, last_name, request.form['email'], h_password, quote, color, hobbies, courses)
+
         # add user to database and commit
         db.session.add(new_user)
         db.session.commit()
@@ -216,6 +226,47 @@ def new_comment(post_id):
 
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/profile')
+def profile():
+    if session.get('user'):
+        user = db.session.query(User).filter_by(id=session['user_id']).one()
+
+        return render_template('profile.html', User=user, user=session['user'])
+
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/profile/update', methods=['POST'])
+def update_profile():
+    if session.get('user'):
+
+        print("Profile updated")
+
+        newQuote = request.form['quote']
+        newColor = request.form['color']
+        newHobbies = request.form['hobbies']
+        newCourses = request.form['courses']
+
+        user = db.session.query(User).filter_by(id=session['user_id']).one()
+
+        user.quote = newQuote
+        user.color = newColor
+        user.hobbies = newHobbies
+        user.courses = newCourses
+
+        db.session.add(user)
+        db.session.commit()
+
+        user = db.session.query(User).filter_by(id=session['user_id']).one()
+
+        return redirect(url_for('profile'))
+
+    else:
+        return redirect(url_for('login'))
+
 
 
 

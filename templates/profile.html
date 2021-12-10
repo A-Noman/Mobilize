@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Notes App">
+        <title>Mobilize Posting App - Feed</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body>
+      <nav>
+        <a href="{{url_for('logout')}}">Logout</a>
+      </nav>
+      <nav>
+        <a href="{{ url_for('index') }}"> Home</a> ||
+        <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+        <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+        <a href="{{url_for('profile') }}"> Profile</a>
+      </nav>
+
+      <h1>Welcome {{user}} to the Mobilize Posting App!</h1>
+
+      <!-- {% if profile %}
+      <form action="{{ url_for('update_profile', user_id=user.id) }}" method="post">
+        {% else %} -->
+        <form action="{{ url_for('update_profile') }}" method="post">
+            <!-- {% endif %} -->
+
+            <p><label>Favorite Quote: </label></p>
+            <p><input type="text" name="quote" value="{{User.quote}}"/></p>
+
+            <p><label>Favorite Color: </label></p>
+            <p><input type="text" name="color" value="{{User.color}}"/></p>
+
+            <p><label>Hobbies</label></p>
+            <p>
+              <textarea name="hobbies"  rows="6" cols="0">
+                  {{User.hobbies}}
+              </textarea>
+            </p>
+
+            <p><label>My Courses: </label></p>
+            <p>
+              <textarea name="courses"  rows="6" cols="0">
+                  {{User.courses}}
+              </textarea>
+            </p>
+
+            <input type="submit" value="Update Profile"/>
+
+
+    </body>
+</html>

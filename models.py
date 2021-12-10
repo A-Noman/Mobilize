@@ -26,13 +26,23 @@ class User(db.Model):
     registered_on = db.Column(db.DateTime, nullable=False)
     posts = db.relationship("Post", backref="user", lazy=True)
     comments = db.relationship("Comment", backref="user", lazy=True)
+    # Profile stuff
+    quote = db.Column("quote", db.String(100), nullable=True, default="test")
+    color = db.Column("color", db.String(100), nullable=True, default="ooo")
+    hobbies = db.Column("hobbies", db.String(100), nullable=True, default="ooo")
+    courses = db.Column("courses", db.String(100), nullable=True, default="ooo")
 
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name, last_name, email, password, quote, color, hobbies, courses):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = password
         self.registered_on = datetime.date.today()
+
+        self.quote = quote
+        self.color = color
+        self.hobbies = hobbies
+        self.courses = courses
 
 
 class Comment(db.Model):

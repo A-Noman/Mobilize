@@ -15,7 +15,9 @@
       <nav>
         <a href="{{ url_for('index') }}"> Home</a> ||
         <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-        <a href="{{ url_for('new_post') }}"> Add Post</a>
+        <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+        <a href="{{ url_for('profile') }}"> Profile</a>
+
       </nav>
 
       <h1>Welcome {{user}} to the Mobilize Posting App!</h1>
@@ -23,16 +25,18 @@
 
         <table>
             <tr>
-                <th>User ID</th>
+                <th>Name</th>
                 <th>Subject</th>
                 <th>Date</th>
                 <th>Rating</th>
             </tr>
+
+
             {% for post in posts %}
             <tr>
-            
+
                 <!-- get the Name -->
-                <td>{{post.user_id}}</td>
+                <td>{{user}}</td>
 
                 <!-- get the subject -->
                 <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.subject }}</a></td>

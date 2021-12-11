@@ -243,8 +243,6 @@ def profile():
 def update_profile():
     if session.get('user'):
 
-        print("Profile updated")
-
         newQuote = request.form['quote']
         newColor = request.form['color']
         newHobbies = request.form['hobbies']
@@ -266,6 +264,40 @@ def update_profile():
 
     else:
         return redirect(url_for('login'))
+
+
+# stone
+
+@app.route('/credentials')
+def credentials():
+   if session.get('user'):
+       the_user = db.session.query(User).filter_by(id=session['user_id']).one()
+
+       return render_template('credentials.html', user = the_user)
+
+
+@app.route('/credentials/update', methods=['POST'])
+def updatePersonalInformation():
+
+   if session.get('user'):
+       email = request.form['email']
+       password = request.form['password']
+
+       user = db.session.query(User).filter_by(id = session['user_id']).one()
+       # update user data
+
+       user.email = email
+       user.password = password
+
+       # update username and password in DB
+
+       db.session.add(user)
+       db.session.commit()
+
+   return render_template('credentials.html', User=user, user=session['user'] )
+
+
+
 
 
 

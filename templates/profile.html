@@ -10,15 +10,24 @@
     </head>
 
     <body>
+
       <nav>
         <a href="{{url_for('logout')}}">Logout</a>
       </nav>
-      <nav>
-        <a href="{{ url_for('index') }}"> Home</a> ||
-        <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-        <a href="{{ url_for('new_post') }}"> Add Post</a> ||
-        <a href="{{url_for('profile') }}"> Profile</a>
-      </nav>
+
+
+
+
+      <div class="featureLinks">
+
+        <!-- <nav> -->
+          <a href="{{ url_for('index') }}"> Home</a> ||
+          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+          <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+          <a href="{{ url_for('profile') }}"> Profile</a> ||
+          <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a>
+        </nav>
+      </div>
 
       <h1>Welcome {{user}} to the Mobilize Posting App!</h1>
 

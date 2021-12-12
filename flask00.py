@@ -50,6 +50,16 @@ def get_posts():
         return redirect(url_for('login'))
 
 
+@app.route('/allPosts')
+def print_ALL():
+    if session.get('user'):
+        all_posts = db.session.query(Post).all()
+
+        return render_template('allPosts.html', posts=all_posts, user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
+
 @app.route('/feed/<post_id>')
 #changed singlePost to feed
 def get_post(post_id):
@@ -59,6 +69,18 @@ def get_post(post_id):
         form = CommentForm()
 
         return render_template('singlePost.html', post=my_post, user=session['user'], form=form)
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/allPosts/<post_id>')
+def get_generalPost(post_id):
+    if session.get('user'):
+        the_post = db.session.query(Post).filter_by(id=post_id).one()
+
+        form = CommentForm()
+
+        return render_template('singlePost.html', post=the_post, user=session['user'], form=form)
     else:
         return redirect(url_for('login'))
 

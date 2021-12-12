@@ -9,9 +9,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 
-<h2>Update your email and password here.</h2>
-
 <body>
+
+  <h2>Update your email and password here.</h2>
+
+  <div class="featureLinks">
+
+    <!-- <nav> -->
+      <a href="{{ url_for('index') }}"> Home</a> ||
+      <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+      <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+      <a href="{{ url_for('profile') }}"> Profile</a> ||
+      <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a>
+    </nav>
+  </div>
+
+
+
+
 <form action="{{url_for('updatePersonalInformation')}}" method="POST">
     <h3>Please enter your new email:</h3>
 

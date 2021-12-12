@@ -12,16 +12,19 @@
       <nav>
         <a href="{{url_for('logout')}}">Logout</a>
       </nav>
-      <nav>
-        <a href="{{ url_for('index') }}"> Home</a> ||
-        <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-        <a href="{{ url_for('new_post') }}"> Add Post</a> ||
-        <a href="{{ url_for('profile') }}"> Profile</a> ||
 
-        <!-- stone -->
-        <a href = "{{ url_for('credentials') }}"> Log-in Credentials </a>
 
-      </nav>
+      <div class="featureLinks">
+
+        <!-- <nav> -->
+          <a href="{{ url_for('index') }}"> Home</a> ||
+          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+          <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+          <a href="{{ url_for('profile') }}"> Profile</a> ||
+          <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a> ||
+          <a href = "{{ url_for('credentials') }}"> Log-in Credentials </a>
+        </nav>
+      </div>
 
       <h1>Welcome {{user}} to the Mobilize Posting App!</h1>
       <h1>Listing Posts</h1>
@@ -39,7 +42,7 @@
             <tr>
 
                 <!-- get the Name -->
-                <td>{{user}}</td>
+                <td>{{post.user.first_name}}</td>
 
                 <!-- get the subject -->
                 <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{ post.subject }}</a></td>

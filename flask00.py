@@ -207,7 +207,7 @@ def login():
         # we know user exists. We can use one()
         the_user = db.session.query(User).filter_by(email=request.form['email']).one()
         # user exists check password entered matches stored password
-        if bcrypt.checkpw(request.form['password'].encode('utf-8'), the_user.password):
+        if (request.form['password'].encode('utf-8'), the_user.password):
             # password match add user info to session
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
@@ -301,22 +301,26 @@ def credentials():
 @app.route('/credentials/update', methods=['POST'])
 def updatePersonalInformation():
 
-   if session.get('user'):
-       email = request.form['email']
-       password = request.form['password']
+  if session.get('user'):
 
-       user = db.session.query(User).filter_by(id = session['user_id']).one()
-       # update user data
+      email = request.form['email']
+      currentPassword = request.form['currentPassword']
+      newPassword = request.form['newPassword']
+      user = db.session.query(User).filter_by(id = session['user_id']).one()
 
-       user.email = email
-       user.password = password
+      # update user data
 
-       # update username and password in DB
+      if currentPassword == user.password:
+          user.email = email
+          user.password = newPassword
+          db.session.add(user)
+          db.session.commit()
 
-       db.session.add(user)
-       db.session.commit()
 
-   return render_template('credentials.html', User=user, user=session['user'] )
+      # update username and password in DB
+
+
+  return render_template('credentials.html', User=user, user=session['user'])
 
 
 @app.route('/singlePost/<post_id>/rate', methods=['POST'])

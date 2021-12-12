@@ -297,6 +297,42 @@ def updatePersonalInformation():
    return render_template('credentials.html', User=user, user=session['user'] )
 
 
+@app.route('/singlePost/<post_id>/rate', methods=['POST'])
+def upvote(post_id):
+    if session.get('user'):
+       # retrieve note from database
+       my_post = db.session.query(Post).filter_by(id=post_id).one()
+
+       my_post.rating = my_post.rating+1
+       db.session.add(my_post)
+       db.session.commit()
+
+       form = CommentForm()
+
+       return render_template('singlePost.html', post=my_post, user=session['user'], form=form)
+
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/singlePost/<post_id>/undo', methods=['POST'])
+def undo(post_id):
+    if session.get('user'):
+       # retrieve note from database
+       my_post = db.session.query(Post).filter_by(id=post_id).one()
+
+       my_post.rating = my_post.rating - 1
+       db.session.add(my_post)
+       db.session.commit()
+
+       form = CommentForm()
+
+       return render_template('singlePost.html', post=my_post, user=session['user'], form=form)
+
+    else:
+        return redirect(url_for('login'))
+
+
+
 
 
 

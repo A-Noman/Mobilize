@@ -8,6 +8,8 @@
         <!-- styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+
+
     </head>
     <body>
       <nav>
@@ -27,11 +29,23 @@
                 <th>Subject</th>
                 <th>Text</th>
                 <th>Date</th>
+                <th>Rate</th>
             </tr>
             <tr>
                 <td>{{ post.subject }}</td>
                 <td>{{ post.text }}</td>
                 <td>{{ post.date }}</td>
+                <td>{{post.rating}}</td>
+                <td>
+                  <form action="{{ url_for('upvote', post_id=post.id) }}" method="post">
+                    <input type="submit" value="UP VOTE">
+                  </form>
+                </td>
+                <td>
+                  <form action="{{ url_for('undo', post_id=post.id) }}" method="post">
+                    <input type="submit" value="UNDO">
+                  </form>
+                </td>
             </tr>
         </table>
 

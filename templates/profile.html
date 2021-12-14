@@ -6,36 +6,29 @@
         <meta name="description" content="UNCC Notes App">
         <title>Mobilize Posting App - Feed</title>
         <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
     </head>
 
     <body>
 
-      <nav>
+
+
+
+      <div class="navigation-wrapper">
+        <a style="height:inherit;" href="{{url_for('print_ALL')}}"> <img src="{{url_for('static', filename='head-logo.png')}}" alt="logo"></a>
+
+        <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+        <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+        <a href="{{ url_for('profile') }}"> Profile</a> ||
+        <a href="{{ url_for('credentials') }}"> Update Log-in Credentials </a> ||
         <a href="{{url_for('logout')}}">Logout</a>
-      </nav>
-
-
-
-
-      <div class="featureLinks">
-
-        <!-- <nav> -->
-          <a href="{{ url_for('index') }}"> Home</a> ||
-          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-          <a href="{{ url_for('new_post') }}"> Add Post</a> ||
-          <a href="{{ url_for('profile') }}"> Profile</a> ||
-          <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a>
-        </nav>
       </div>
 
-      <h1>Welcome {{user}} to the Mobilize Posting App!</h1>
 
-      <!-- {% if profile %}
-      <form action="{{ url_for('update_profile', user_id=user.id) }}" method="post">
-        {% else %} -->
+      <div class="formwrapper">
+        <h2 class="title">Profile</h2>
+
         <form action="{{ url_for('update_profile') }}" method="post">
-            <!-- {% endif %} -->
 
             <p><label>Favorite Quote: </label></p>
             <p><input type="text" name="quote" value="{{User.quote}}"/></p>
@@ -45,20 +38,24 @@
 
             <p><label>Hobbies</label></p>
             <p>
-              <textarea name="hobbies"  rows="6" cols="0">
-                  {{User.hobbies}}
+              <textarea name="hobbies"  rows="3" cols="0">{{User.hobbies}}
               </textarea>
             </p>
 
             <p><label>My Courses: </label></p>
             <p>
-              <textarea name="courses"  rows="6" cols="0">
-                  {{User.courses}}
+              <textarea name="courses"  rows="4" cols="0">{{User.courses}}
               </textarea>
             </p>
 
             <input type="submit" onclick="alert('Do you really want to update your profile? Click OK to confirm')" value="Update Profile"/>
-
-
+          </form>
+        </div>
     </body>
+
+    <footer>
+      <img id="bunny-logo" src="{{url_for('static', filename='bunny.png')}}" alt="bunny">
+      <p>Copyright © 2021 Mobilize Group. All rights reserved.</p>
+    </footer>
+
 </html>

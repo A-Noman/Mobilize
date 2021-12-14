@@ -1,5 +1,9 @@
+/* Theme colors */
+/* Light blue: rgb(199, 218, 238)  */
+/* Dark blue: rgb(39, 68, 104)  */
+
 form {
-  background: white;
+  background: rgb(199, 218, 238);
   width: 100%;
 }
 
@@ -10,25 +14,30 @@ form {
 .title {
   font-size: 1.7rem;
   font-weight: 300;
-  border-bottom: 1px solid #dbe3ec;
+  border-bottom: 1.5px solid rgb(39, 68, 104);
   padding: 5px;
   margin: 0 0 40px 0;
+  text-align: center;
 }
 
 .formwrapper {
   position: relative;
-  background: white;
-  width: 350px;
-  box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
-  padding: 10px;
+  background: rgb(199, 218, 238);
+  width: 300px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 25px;
+  margin: auto;
+  margin-top: 48px;
+  border-radius: 10px;
 }
 
 label {
   font-size: .9em;
-  color: green;
+  color: rgb(39, 68, 104);
   margin-bottom: 3px;
   display: block;
   font-weight: 300;
+  width: fit-content;
 }
 
 input, textarea{
@@ -40,6 +49,7 @@ input, textarea{
   color: #4d5060;
   font-family: 'Poppins', sans-serif;
   font-size: .9em;
+  transition: 0.5s;
 
 }
 
@@ -51,8 +61,8 @@ input[type="text"]:hover,
 input[type="password"]:hover,
 textarea:hover,
 select:hover {
-  border-color: green;
-  background: lightyellow;
+  border-color: rgb(39, 68, 104);
+  background: lightgrey;
 }
 
 input[type="text"]:focus,
@@ -64,20 +74,20 @@ textarea:focus {
 }
 
 input[type="submit"] {
-  background: green;
+  background: rgb(39, 68, 104) ;
   border: 0;
   color: white;
   border-radius: 2px;
   margin-top: 15px;
   font-weight: 400;
-  border: 1px solid green;
+  border: 1px solid rgb(39, 68, 104);
   transition: all .3s ease-out;
 }
 
 input[type="submit"]:hover {
   cursor: pointer;
   background: white;
-  color: green;
+  color: rgb(39, 68, 104);
 }
 
 .success-wrapper {

@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="UNCC Notes App">
-        <title>UNCC Notes App - New Note</title>
-        <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    </head>
+   <head>
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="description" content="UNCC Notes App">
+       <title>UNCC Notes App - New Note</title>
+       <!-- styles -->
+       <link rel="stylesheet" href="{{ url_for('static', filename='newPost.css') }}">
+   </head>
 
-    <body>
-      <nav>
-        <a href="{{url_for('logout')}}">Logout</a>
-      </nav>
+   <body>
 
-      <div class="featureLinks">
+     <div class="navigation-wrapper">
+       <a style="height:inherit;" href="{{url_for('print_ALL')}}"> <img src="{{url_for('static', filename='head-logo.png')}}" alt="logo"></a>
 
-        <!-- <nav> -->
-          <a href="{{ url_for('index') }}"> Home</a> ||
-          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-          <a href="{{ url_for('new_post') }}"> Add Post</a> ||
-          <a href="{{ url_for('profile') }}"> Profile</a> ||
-          <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a>
-        </nav>
-      </div>
+       <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+       <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+       <a href="{{ url_for('profile') }}"> Profile</a> ||
+       <a href="{{ url_for('credentials') }}"> Update Log-in Credentials </a> ||
+       <a href="{{url_for('logout')}}">Logout</a>
+     </div>
 
-    <h1>Welcome {{user}} to Mobilize!</h1>
+    <div class="formwrapper">
+      <h2 class="title">New Post</h2>
+     {% if post %}
+     <form enctype="multipart/form-data"  action="{{ url_for('update_post', post_id=post.id) }}" method="post">
+         {% else %}
+         <form enctype="multipart/form-data" action="new" method="post">
+             {% endif %}
+             <p><label>Subject </label></p>
+             <p><input type="text" name="subject" class="form-field" value="{% if post %}{{post.subject}}{% endif %}"/></p>
+             <p><label>Text</label></p>
+             <p>
+               <textarea class="form-field" name="noteText"  rows="6" cols="0">
+                 {% if post %}
+                   {{post.text}}
+                 {% else %}                Add text here ...
+                 {% endif %}
+               </textarea>
+             </p>
+             <p>
+                 {% if post %}
+                     <input type="submit" value="Update Post"/>
+                 {% else %}
+                     <p><label>Attach an image</label></p>
+                     <input type="file" id ="image" name="filename"/>
+                     <input type="submit" value="Add Post"/>
+                 {% endif %}
+             </p>
+         </form>
+       </div>
+   </body>
 
-    {% if post %}
-    <form action="{{ url_for('update_post', post_id=post.id) }}" method="post">
-        {% else %}
-        <form action="new" method="post">
-            {% endif %}
-            <p><label>Subject </label></p>
-            <p><input type="text" name="subject" value="{% if post %}{{post.subject}}{% endif %}"/></p>
-            <p><label>Post</label></p>
-            <p>
-              <textarea name="noteText"  rows="6" cols="0">
-                {% if post %}
-                  {{post.text}}
-                {% else %}
-                  Add your new post here ...
-                {% endif %}
-              </textarea>
-            </p>
-            <p>
-                {% if post %}
-                <input type="submit" value="Update Post"/>
-                {% else %}
-                <input type="submit" value="Add Post"/>
-                {% endif %}
-            </p>
-        </form>
-    </body>
+   <footer>
+     <img id="bunny-logo" src="{{url_for('static', filename='bunny.png')}}" alt="bunny">
+     <p>Copyright © 2021 Mobilize Group. All rights reserved.</p>
+   </footer>
 </html>

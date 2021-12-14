@@ -1,0 +1,103 @@
+.navigation-wrapper {
+  background-color: rgb(39, 68, 104);
+  height: 48px;
+  padding-left: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
+  line-height: 48px;
+  display: flex;
+  justify-content: space-around;
+}
+
+a > img {
+  height: inherit;
+}
+
+body {
+  margin: auto;
+  min-height: 100vh;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(199, 218, 238);
+}
+
+footer {
+  margin-top: auto;
+  background-color: rgb(39, 68, 104);
+  height: 48px;
+  text-align: center;
+  color: rgb(199, 218, 238);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.navigation-wrapper a {
+  color: rgb(199, 218, 238);
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.navigation-wrapper a:hover {
+  color: lightyellow;
+}
+
+footer > #bunny-logo {
+  height: inherit;
+  width: auto;
+  max-width: 250px;
+  max-height: 300px;
+  margin-top: auto;
+}
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  max-width: 1000px;
+  margin-left: 30px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+}
+
+.content-table thead tr {
+  background-color: rgb(39, 68, 104);
+  color: white;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table th {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid rgb(39, 68, 104);
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: lightgrey;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 3px solid rgb(39, 68, 104)
+}
+
+h1 {
+  margin-left: 30px;
+  text-decoration: underline;
+}

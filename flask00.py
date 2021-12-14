@@ -15,6 +15,7 @@ from flask import session
 from forms import LoginForm
 from forms import CommentForm
 from models import Comment as Comment
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
 
@@ -23,11 +24,18 @@ app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mobilizePosts.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.config['SECRET_KEY'] = 'SE3155'
+
+UPLOAD_FOLDER = 'static'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
 # Setup models
 with app.app_context():
    db.create_all()   # run under the app context
+
+def allowed_file(filename):
+  return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -87,14 +95,21 @@ def get_generalPost(post_id):
 
 @app.route('/feed/new',methods=['GET','POST'])
 def new_post():
-    if session.get('user'):
-
-       # check method used for request
+   if session.get('user'):
+      # check method used for request
        if request.method == 'POST':
            # get title data
            subject = request.form["subject"]
            # get note data
            text = request.form['noteText']
+           # get image file
+           image_file = request.files['filename']
+           # check if the image file has been uploaded
+           if image_file.filename != '' and allowed_file(image_file.filename):
+               ##image_file.save(image_file.filename)
+               image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename))
+               print('shreya : ' + image_file.filename)
+
            first_name = session['user']
            # create date stamp
            from datetime import date
@@ -103,20 +118,18 @@ def new_post():
            today = today.strftime("%m-%d-%Y")
 
            rating = 0
-
            # new_record = Post(subject, text, today, session['user_id'], first_name)
-           new_record = Post(subject, text, today, rating, session['user_id'])
-
+           new_record = Post(subject, text, image_file.filename, today, rating, session['user_id'])
            db.session.add(new_record)
            db.session.commit()
-
            return redirect(url_for('get_posts'))
        else:
            # GET request -show new note form
            return render_template('newPost.html', user=session['user'])
 
-    else:
-        return redirect(url_for('login'))
+   else:
+       return redirect(url_for('login'))
+
 
 
 # TO CHANGE
@@ -193,7 +206,7 @@ def register():
         session['user'] = first_name
         session['user_id'] = new_user.id  # access id value from user model of this newly added user
         # show user dashboard view
-        return redirect(url_for('get_posts'))
+        return redirect(url_for('print_ALL'))
 
     # something went wrong - display register view
     return render_template('register.html', form=form)
@@ -212,7 +225,7 @@ def login():
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
             # render view
-            return redirect(url_for('get_posts'))
+            return redirect(url_for('print_ALL'))
 
         # password check failed
         # set error message to alert user
@@ -244,7 +257,7 @@ def new_comment(post_id):
             db.session.add(new_record)
             db.session.commit()
 
-        return redirect(url_for('get_post', post_id=post_id))
+        return redirect(url_for('get_generalPost', post_id=post_id))
 
     else:
         return redirect(url_for('login'))
@@ -358,11 +371,10 @@ def undo(post_id):
         return redirect(url_for('login'))
 
 
-
-
-
-
-
+@app.route('/display/<filename>')
+def display_image(filename):
+  #print('display_image filename: ' + filename)
+  return redirect(url_for('static', filename=filename), code=301)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)

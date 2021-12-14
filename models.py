@@ -2,20 +2,23 @@ from database import db
 import datetime
 
 class Post(db.Model):
-    id = db.Column("id", db.Integer, primary_key=True)
-    subject = db.Column("subject", db.String(200))
-    text = db.Column("text", db.String(100))
-    date = db.Column("date", db.String(50))
-    rating = db.Column("rating", db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    comments = db.relationship("Comment", backref="post", cascade="all, delete-orphan", lazy=True)
+   id = db.Column("id", db.Integer, primary_key=True)
+   subject = db.Column("subject", db.String(200))
+   text = db.Column("text", db.String(100))
+   image_file = db.Column("image", db.String(100))
+   date = db.Column("date", db.String(50))
+   rating = db.Column("rating", db.Integer)
+   user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+   comments = db.relationship("Comment", backref="post", cascade="all, delete-orphan", lazy=True)
 
-    def __init__(self, subject, text, date, rating, user_id):
-        self.subject = subject
-        self.text = text
-        self.date = date
-        self.rating = rating
-        self.user_id = user_id
+   def __init__(self, subject, text, image_file, date, rating, user_id):
+       self.subject = subject
+       self.text = text
+       self.image_file = image_file
+       self.date = date
+       self.rating = rating
+       self.user_id = user_id
+
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)

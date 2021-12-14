@@ -1,84 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="UNCC Notes App">
-        <title>Mobilize Post App - View your Post</title>
-        <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+   <head>
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="description" content="UNCC Notes App">
+       <title>Mobilize Post App - View your Post</title>
+       <!-- styles -->
+       <link rel="stylesheet" href="{{ url_for('static', filename='newPost.css') }}">
+       <link rel="stylesheet" href="{{ url_for('static', filename='allPosts.css') }}">
+       <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+       <link rel="stylesheet" href="{{ url_for('static', filename='singlePost.css') }}">
+   </head>
+
+   <body>
+
+     <div class="navigation-wrapper">
+       <a style="height:inherit;" href="{{url_for('print_ALL')}}"> <img src="{{url_for('static', filename='head-logo.png')}}" alt="logo"></a>
+
+       <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
+       <a href="{{ url_for('new_post') }}"> Add Post</a> ||
+       <a href="{{ url_for('profile') }}"> Profile</a> ||
+       <a href="{{ url_for('credentials') }}"> Update Log-in Credentials </a> ||
+       <a href="{{url_for('logout')}}">Logout</a>
+     </div>
 
 
-    </head>
-    <body>
-      <nav>
-        <a href="{{url_for('logout')}}">Logout</a>
-      </nav>
+       <h1>Post Details</h1>
 
-      <div class="featureLinks">
+       <table class="content-table">
+         <thead>
+           <tr>
+               <th>Subject</th>
+               <th>Text</th>
+               <th>Image</th>
+               <th>Date</th>
+               <th>Rating</th>
+               <th></th>
+               <th></th>
+           </tr>
+         </thead>
 
-        <!-- <nav> -->
-          <a href="{{ url_for('index') }}"> Home</a> ||
-          <a href="{{ url_for('get_posts') }}"> My Posts</a> ||
-          <a href="{{ url_for('new_post') }}"> Add Post</a> ||
-          <a href="{{ url_for('profile') }}"> Profile</a> ||
-          <a href="{{ url_for('print_ALL') }}"> ALL POSTS</a>
-        </nav>
-      </div>
+         <tbody>
+           <tr>
+               <td>{{ post.subject }}</td>
+               <td>{{ post.text }}</td>
+               <td>
+                 {% if post.image_file %}
+                   <a href="{{ url_for('display_image', filename=post.image_file) }}">
+                       <img id="html_link" src="{{url_for('static', filename='')}}" alt="Image">
+                   </a>
+                {% endif %}
+               </td>
 
+               <td>{{ post.date }}</td>
+               <td>{{post.rating}}</td>
+               <td>
+                 <form action="{{ url_for('upvote', post_id=post.id) }}" method="post">
+                   <input type="submit" value="UP VOTE">
+                 </form>
+               </td>
+               <td>
+                 <form action="{{ url_for('undo', post_id=post.id) }}" method="post">
+                   <input type="submit" value="UNDO">
+                 </form>
+               </td>
+             </tr>
+         </tbody>
+       </table>
 
+       <form action="{{url_for('new_comment', post_id=post.id)}}" method="post">
+         <div class="formwrapper">
+           <h2 class="title">Add a comment</h2>
+             <div class="form-field">
+               {{form.comment.label}} <br/> {{form.comment}}
+             </div>
+           {{form.submit}}
+         </div>
+       </form>
 
+     <div class="comments-wrapper">
+       {% if post.comments %}
+         {% if post.comments|length > 0 %}
+           <h2>Comments</h2>
+           <ul>
+             {% for comment in post.comments %}
+               <li>{{comment.content}}</li>
+             {% endfor %}
+           </ul>
+         {% endif %}
+       {% endif %}
+     </div>
 
-      <h1>Welcome {{user}} to Mobilize! </h1>
-        <h1>Post Details</h1>
-
-        <table>
-            <tr>
-                <th>Subject</th>
-                <th>Text</th>
-                <th>Date</th>
-                <th>Rate</th>
-            </tr>
-            <tr>
-                <td>{{ post.subject }}</td>
-                <td>{{ post.text }}</td>
-                <td>{{ post.date }}</td>
-                <td>{{post.rating}}</td>
-                <td>
-                  <form action="{{ url_for('upvote', post_id=post.id) }}" method="post">
-                    <input type="submit" value="UP VOTE">
-                  </form>
-                </td>
-                <td>
-                  <form action="{{ url_for('undo', post_id=post.id) }}" method="post">
-                    <input type="submit" value="UNDO">
-                  </form>
-                </td>
-            </tr>
-        </table>
-
-        {% if post.comments %}
-          {% if post.comments|length > 0 %}
-            <h2>Comments</h2>
-            <ul>
-              {% for comment in post.comments %}
-                <li>{{comment.content}}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endif %}
-
-        <form action="{{url_for('new_comment', post_id=post.id)}}" method="post">
-          <div class="formwrapper">
-            <h2 class="title">Add a comment</h2>
-              <div class="form-field">
-                {{form.comment.label}} <br/> {{form.comment}}
-              </div>
-            {{form.submit}}
-          </div>
-        </form>
-
-
-    </body>
+   </body>
 </html>
